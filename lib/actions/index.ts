@@ -39,7 +39,7 @@ export async function isKeyValid(key: string) {
 }
 
 export async function ping() {
-  console.log("ping server... pong.");
+  // console.log("ping server... pong.");
   return { ping: "pong" };
 }
 

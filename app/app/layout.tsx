@@ -46,7 +46,7 @@ export default async function RootLayout({
         <Sidebar />
       </div>
       <div className="w-[85vw] p-5">{children}</div>
-      <div className="p-1 absolute top-5 right-5 flex gap-3">
+      <div className="p-1 absolute top-5 right-7 flex gap-3">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="w-8 h-8 flex items-center cursor-pointer justify-center bg-[#F6F6F6] px-2 rounded-sm shadow">
