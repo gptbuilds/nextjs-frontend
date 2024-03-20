@@ -5,7 +5,7 @@ import React from "react";
 import SignInButton from "./_components/signin-button";
 
 const Page = async ({ params }: { params: { choice: string } }) => {
-  //   console.log(params.choice);
+  //   (params.choice);
   if (params.choice !== "signup" && params.choice !== "signin") notFound();
 
   const supabase = supabaseServer();

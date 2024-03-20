@@ -9,6 +9,68 @@ import { connectToDatabase } from "../mongodb";
 
 const openai = new OpenAI({ apiKey: process.env.OPEN_AI_KEY });
 
+export async function getConversationsByPhoneNumber(phoneNumber: string) {
+  try {
+    const { db } = await connectToDatabase();
+    const conversations = await db
+      .collection("message-store-permanent")
+      .find({})
+      .sort({ session: 1, phone_number: 1 }) // 1 for ascending order
+      .toArray();
+
+    // console.log(conversations);
+    let groupedByPhoneNumber: any = [];
+
+    conversations.forEach((conversation: any) => {
+      const { phone_number, session } = conversation;
+      let phoneEntry = groupedByPhoneNumber.find(
+        (entry: any) => entry.phone_number === phone_number
+      );
+
+      if (!phoneEntry) {
+        phoneEntry = { phone_number, sessions: [] };
+        groupedByPhoneNumber.push(phoneEntry);
+      }
+
+      let sessionEntry = phoneEntry.sessions.find(
+        (s: any) => s.session === session
+      );
+      if (!sessionEntry) {
+        sessionEntry = { session, conversations: [] };
+        phoneEntry.sessions.push(sessionEntry);
+      }
+
+      sessionEntry.conversations.push(conversation);
+    });
+
+    // console.log("Searching for:", phoneNumber);
+    // console.log("Current data:", JSON.stringify(groupedByPhoneNumber, null, 2));
+
+    const found = groupedByPhoneNumber.find(
+      (entry: any) => entry.phone_number === decodeURIComponent(phoneNumber)
+    );
+    // console.log(found);
+
+    return { error: null, data: found };
+  } catch (error) {
+    return { error, data: null };
+  }
+}
+
+export async function getSessionFromPhoneNumber(phoneNumber: string, session: string) {
+  try {
+    const {data, error} = await getConversationsByPhoneNumber(phoneNumber)
+
+    // console.log(data)
+    const found = data.sessions.find((e: any) => e.session === session)
+
+    // console.log(found)
+    return { error: null, data: found };
+  } catch (error) {
+    return { error, data: null };
+  }
+}
+
 export async function setBotPower(toggle: boolean) {
   try {
     const { db } = await connectToDatabase();

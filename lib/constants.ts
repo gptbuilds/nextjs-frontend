@@ -1,3 +1,8 @@
+export const AI_COLOR = "bg-blue-300";
+export const HUMAN_COLOR = "bg-green-300";
+export const AGENT_COLOR = "bg-purple-300";
+export const CLIENT_COLOR = "bg-orange-300";
+
 export const ADMIN_EMAIL = ["cheekyprogrammer@gmail.com"];
 
 export const SOCIAL_MEDIA_LINKS = [
